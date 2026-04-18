@@ -56,9 +56,9 @@ const SeviAIHub = () => {
       {/* Fondo Opcional */}
       {hubData.backgroundImage ? (
         <div 
-          className="fixed inset-0 z-0 bg-cover bg-center"
+          className="fixed inset-0 z-0 bg-cover bg-center opacity-30 blur-2xl"
           style={{ 
-            backgroundImage: `linear-gradient(to bottom, rgba(250, 249, 246, 0.96), rgba(250, 249, 246, 0.99)), url('${hubData.backgroundImage}')` 
+            backgroundImage: `url('${hubData.backgroundImage}')` 
           }}
         ></div>
       ) : (
@@ -66,34 +66,38 @@ const SeviAIHub = () => {
       )}
 
       {/* Contenedor Principal (Mobile First) */}
-      <div className="w-full max-w-md min-h-screen flex flex-col relative z-10 mx-auto bg-transparent bg-white/40 backdrop-blur-sm sm:shadow-2xl">
+      <div className="w-full max-w-md min-h-screen flex flex-col relative z-10 mx-auto bg-transparent bg-white/60 backdrop-blur-md sm:shadow-2xl">
         
-        {/* Héroe Visual */}
+        {/* Héroe Visual y Logo */}
         {hubData.backgroundImage && (
-          <div className="w-full h-48 sm:h-56 relative overflow-hidden">
-             <img 
-                src={hubData.backgroundImage} 
-                alt="Oliver Barranco" 
-                className="w-full h-full object-cover object-top"
-             />
-             <div className="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent"></div>
+          <div className="w-full h-56 sm:h-64 relative mb-2">
+             <div className="w-full h-full relative overflow-hidden">
+                <img 
+                   src={hubData.backgroundImage} 
+                   alt="Oliver Barranco" 
+                   className="w-full h-full object-cover object-top"
+                />
+                {/* Difuminación más suave */}
+                <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
+             </div>
+             
+             {/* Logo a la derecha, superpuesto entre el hero y la zona blanca */}
+             <div className="absolute -bottom-8 right-6 sm:right-8 z-30">
+               <img 
+                 src={hubData.logoUrl} 
+                 alt={`Logo ${hubData.name}`} 
+                 className="h-20 sm:h-24 w-auto object-contain drop-shadow-xl"
+                 onError={(e) => { e.target.style.display = 'none'; }}
+               />
+             </div>
           </div>
         )}
 
         {/* Cabecera visual y perfil */}
-        <div className={`px-8 flex flex-col items-center text-center ${hubData.backgroundImage ? '-mt-16' : 'pt-14'}`}>
+        <div className={`px-8 flex flex-col items-center text-center ${hubData.backgroundImage ? '-mt-16 relative z-20' : 'pt-14'}`}>
           
-          <div className="mb-4">
-            <img 
-              src={hubData.logoUrl} 
-              alt={`Logo ${hubData.name}`} 
-              className="h-16 sm:h-20 w-auto object-contain mx-auto drop-shadow-sm transition-all"
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-          </div>
-
           {/* Foto de perfil */}
-          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border border-[#DCAE56]/30 shadow-xl overflow-hidden mb-5 bg-black relative flex items-center justify-center p-1 transition-all group">
+          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border border-[#DCAE56]/50 shadow-2xl overflow-hidden mb-6 bg-black relative flex items-center justify-center p-1 transition-all group">
              <div className="w-full h-full rounded-full overflow-hidden bg-[#111]">
                 <img 
                 src={hubData.profilePicture} 
@@ -107,7 +111,7 @@ const SeviAIHub = () => {
           </div>
 
           {/* Nombre y Actividad */}
-          <h1 className="text-3xl font-black text-black mb-1.5 leading-tight tracking-tight drop-shadow-sm">
+          <h1 className="text-3xl font-black text-[#1a1a1a] mb-1.5 leading-tight tracking-tight drop-shadow-sm">
             {hubData.name}
           </h1>
           
@@ -117,33 +121,39 @@ const SeviAIHub = () => {
 
           {/* Contacto Directo Cabecera */}
           <div className="flex flex-col gap-3 w-full max-w-sm mb-6">
-            <a href={`mailto:${hubData.email}`} className="text-black/70 hover:text-[#DCAE56] font-medium text-[15px] flex justify-center items-center gap-2.5 transition-colors">
+            <a href={`mailto:${hubData.email}`} className="text-[#1a1a1a]/70 hover:text-[#DCAE56] font-medium text-[15px] flex justify-center items-center gap-2.5 transition-colors">
               <Mail className="w-4 h-4 text-[#DCAE56]" /> {hubData.email}
             </a>
-            <a href={`tel:${hubData.phone}`} className="text-black/70 hover:text-[#DCAE56] font-medium text-[15px] flex justify-center items-center gap-2.5 transition-colors">
+            <a href={`tel:${hubData.phone}`} className="text-[#1a1a1a]/70 hover:text-[#DCAE56] font-medium text-[15px] flex justify-center items-center gap-2.5 transition-colors">
               <Phone className="w-4 h-4 text-[#DCAE56]" /> {hubData.phone}
             </a>
           </div>
           
-          {/* Frase Principal */}
+          {/* Frase Principal - Estilo bloque de cita premium */}
           {hubData.mainHeadline && (
-            <div className="relative mb-8 w-full px-2">
-               <div className="absolute top-0 left-4 w-4 h-px bg-[#DCAE56]"></div>
-               <p className="text-[15px] text-black/80 font-medium leading-relaxed pt-5 text-center px-4">
+            <div className="relative mb-12 w-full px-6 mt-4 py-8 bg-gradient-to-r from-transparent via-[#DCAE56]/5 to-transparent border-y border-[#DCAE56]/20">
+               <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 bg-[#faf9f6] px-2 rounded-full">
+                 <Music className="w-5 h-5 text-[#DCAE56]" />
+               </div>
+               <p className="text-[17px] sm:text-[19px] text-[#1a1a1a] font-serif italic leading-[1.8] text-center tracking-wide">
+                 <span className="text-3xl text-[#DCAE56] font-serif mr-1 leading-none">"</span>
                  {hubData.mainHeadline}
+                 <span className="text-3xl text-[#DCAE56] font-serif ml-1 leading-none align-bottom">"</span>
                </p>
-               <div className="absolute bottom-0 right-4 w-4 h-px bg-[#DCAE56]"></div>
+               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-[#faf9f6] px-4">
+                 <div className="w-2 h-2 rounded-full bg-[#DCAE56]/40"></div>
+               </div>
             </div>
           )}
 
         </div>
 
         {/* Zona de Botones y Enlaces */}
-        <div className="px-6 flex flex-col gap-0 w-full flex-grow pt-4">
+        <div className="px-6 flex flex-col gap-0 w-full flex-grow pt-2">
           
           {/* 1. Enlaces Principales */}
           <div className="mb-10">
-            <h3 className="text-[10px] font-bold text-black/40 uppercase tracking-[0.2em] mb-4 px-2 text-center">
+            <h3 className="text-[10px] font-bold text-black/40 uppercase tracking-[0.2em] mb-5 px-2 text-center">
               Plataformas Oficiales
             </h3>
             {mainLinks.map((link) => (
@@ -169,10 +179,10 @@ const SeviAIHub = () => {
           </div>
 
           {/* 2. Servicios Artísticos */}
-          <div className="mb-10 relative pb-2">
-             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-px bg-[#DCAE56]/50"></div>
+          <div className="mb-10 relative pb-4">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-px bg-[#DCAE56]/50"></div>
              
-             <h3 className="text-[10px] font-bold text-black/40 uppercase tracking-[0.2em] mt-8 mb-5 text-center">
+             <h3 className="text-[10px] font-bold text-black/40 uppercase tracking-[0.2em] mt-8 mb-6 text-center">
                 Servicios Artísticos
              </h3>
              
@@ -193,10 +203,10 @@ const SeviAIHub = () => {
              </div>
           </div>
 
-          {/* 3. Enlaces Especiales (Dossier / Prensa) - MOVIDOS AL FINAL */}
-          <div className="mb-4 relative pt-6">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-px bg-[#DCAE56]/50"></div>
-            <h3 className="text-[10px] font-bold text-[#DCAE56] uppercase tracking-[0.2em] mb-4 px-2 text-center pt-2">
+          {/* 3. Enlaces Especiales (Dossier / Prensa) */}
+          <div className="mb-4 relative pt-4">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-px bg-[#DCAE56]/50"></div>
+            <h3 className="text-[10px] font-bold text-[#DCAE56] uppercase tracking-[0.2em] mb-5 px-2 text-center pt-4">
               Booking & Prensa
             </h3>
             {specialLinks.map((link) => (
