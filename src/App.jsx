@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Phone, Globe, Download, Instagram, Facebook, Youtube, Music, Music3, ChevronRight, MessageCircle, FileText, Mic2, CalendarHeart, Headphones } from 'lucide-react';
 
 const SeviAIHub = () => {
+  // Estados para el Filtro de Confianza (EPK)
+  const [selectedEpk, setSelectedEpk] = useState(null);
+  const [showPasswordStep, setShowPasswordStep] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
   const hubData = {
     name: "Oliver Barranco Trumpet",
     activity: "Trompetista cubano",
@@ -17,8 +22,8 @@ const SeviAIHub = () => {
   };
 
   const specialLinks = [
-    { id: 'dossier-pro', title: "Descargar dossier profesional", url: "https://www.oliverbarrancotrumpet.com/epk", icon: FileText, subtitle: "Promotores, salas y prensa" },
-    { id: 'dossier-intl', title: "Ver dossier internacional", url: "https://www.oliverbarrancotrumpet.com/intl-epk", icon: FileText, subtitle: "Mercado internacional y booking" }
+    { id: 'dossier-pro', title: "Descargar dossier profesional", url: "https://www.oliverbarrancotrumpet.com/epk", icon: FileText, subtitle: "Promotores, salas y prensa", password: "OliverBarrancoTrumpetPrensa" },
+    { id: 'dossier-intl', title: "Ver dossier internacional", url: "https://www.oliverbarrancotrumpet.com/intl-epk", icon: FileText, subtitle: "Mercado internacional y booking", password: "PressOliverBarranco" }
   ];
 
   const mainLinks = [
@@ -50,6 +55,21 @@ const SeviAIHub = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleEpkClick = (e, link) => {
+    e.preventDefault();
+    setSelectedEpk(link);
+    setShowPasswordStep(false);
+    setIsCopied(false);
+  };
+
+  const handleCopyPassword = () => {
+    if (selectedEpk?.password) {
+      navigator.clipboard.writeText(selectedEpk.password);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2500);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#faf9f6] text-black font-sans flex flex-col items-center selection:bg-[#DCAE56] selection:text-white relative pb-8">
       
@@ -77,11 +97,10 @@ const SeviAIHub = () => {
                    alt="Oliver Barranco" 
                    className="w-full h-full object-cover object-top"
                 />
-                {/* Difuminación más suave */}
                 <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
              </div>
              
-             {/* Logo a la derecha, superpuesto como un sellito */}
+             {/* Logo superpuesto como un sellito */}
              <div className="absolute -bottom-6 right-3 sm:right-4 z-30">
                <img 
                  src={hubData.logoUrl} 
@@ -129,7 +148,7 @@ const SeviAIHub = () => {
             </a>
           </div>
           
-          {/* Frase Principal - Estilo bloque de cita premium */}
+          {/* Frase Principal */}
           {hubData.mainHeadline && (
             <div className="relative mb-12 w-full px-6 mt-4 py-8 bg-gradient-to-r from-transparent via-[#DCAE56]/5 to-transparent border-y border-[#DCAE56]/20">
                <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-3 bg-[#faf9f6] px-2 rounded-full">
@@ -213,20 +232,21 @@ const SeviAIHub = () => {
                <a 
                key={link.id} 
                href={link.url} 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               className="group flex items-center justify-between p-4 bg-black border border-[#DCAE56]/30 hover:border-[#DCAE56] rounded-2xl transition-all shadow-lg mb-3 active:scale-[0.98]"
+               onClick={(e) => handleEpkClick(e, link)}
+               className="group flex flex-col justify-center p-4 bg-black border border-[#DCAE56]/30 hover:border-[#DCAE56] rounded-2xl transition-all shadow-lg mb-3 active:scale-[0.98] cursor-pointer relative"
              >
                <div className="flex items-center gap-4">
-                 <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center text-[#DCAE56] transition-colors border border-[#DCAE56]/20">
+                 <div className="w-12 h-12 rounded-full bg-[#111] flex items-center justify-center text-[#DCAE56] transition-colors border border-[#DCAE56]/20 shrink-0">
                    <link.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                  </div>
-                 <div>
-                   <span className="block font-bold text-white text-[16px] leading-tight mb-1">{link.title}</span>
-                   <span className="text-[11px] text-[#DCAE56]/80 font-medium uppercase tracking-wider">{link.subtitle}</span>
+                 <div className="flex-1 pr-6">
+                   <span className="block font-bold text-white text-[15px] sm:text-[16px] leading-tight mb-1">{link.title}</span>
+                   <span className="block text-[10px] sm:text-[11px] text-[#DCAE56]/80 font-medium uppercase tracking-wider overflow-hidden text-ellipsis whitespace-nowrap">{link.subtitle}</span>
                  </div>
                </div>
-               <ChevronRight className="w-5 h-5 text-[#DCAE56]/50 group-hover:text-[#DCAE56] transform group-hover:translate-x-1 transition-all" />
+               <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                 <ChevronRight className="w-5 h-5 text-[#DCAE56]/50 group-hover:text-[#DCAE56] transform group-hover:translate-x-1 transition-all" />
+               </div>
              </a>
             ))}
           </div>
@@ -260,7 +280,7 @@ const SeviAIHub = () => {
         <Download className="w-5 h-5 text-[#DCAE56] drop-shadow-sm" />
       </button>
 
-      {/* Floating WhatsApp - Dorado Oscuro */}
+      {/* Floating WhatsApp */}
       <a 
         href={`https://wa.me/${hubData.whatsapp}`} 
         target="_blank" 
@@ -270,6 +290,74 @@ const SeviAIHub = () => {
       >
         <MessageCircle className="w-6 h-6 text-white drop-shadow-sm" />
       </a>
+
+      {/* Modal EPK (Filtro de Confianza) */}
+      {selectedEpk && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-[#faf9f6] w-full max-w-[90%] sm:max-w-sm rounded-[2rem] p-8 shadow-2xl relative border border-[#DCAE56]/20">
+             
+             {/* Botón Cerrar */}
+             <button onClick={() => setSelectedEpk(null)} className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-black/50">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+             </button>
+
+             {!showPasswordStep ? (
+               <div className="flex flex-col items-center text-center">
+                 <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center text-[#DCAE56] mb-6 shadow-md border border-[#DCAE56]/20">
+                   <FileText className="w-8 h-8" />
+                 </div>
+                 <h3 className="text-[22px] font-black text-black mb-3 leading-tight">Área Profesional</h3>
+                 <p className="text-black/70 text-[15px] leading-relaxed mb-8">
+                   Este acceso web es exclusivo para profesionales del sector musical. ¿Accedes como promotor, prensa, o booking?
+                 </p>
+                 <div className="flex flex-col w-full gap-3">
+                   <button onClick={() => setShowPasswordStep(true)} className="w-full py-3.5 px-4 rounded-xl bg-black text-[#DCAE56] font-bold text-[15px] shadow-lg hover:shadow-xl transition-all active:scale-[0.98] border border-[#DCAE56]/30">
+                     Sí, soy profesional
+                   </button>
+                   <button onClick={() => setSelectedEpk(null)} className="w-full py-3 px-4 rounded-xl text-black/40 hover:text-black/80 font-bold text-[13px] hover:bg-black/5 transition-colors">
+                     No, cancelar
+                   </button>
+                 </div>
+               </div>
+             ) : (
+               <div className="flex flex-col items-center text-center">
+                 <div className="w-16 h-16 rounded-full bg-[#DCAE56]/15 flex items-center justify-center text-[#DCAE56] mb-6 border border-[#DCAE56]/30">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                 </div>
+                 <h3 className="text-xl font-black text-black mb-2">Contraseña requerida</h3>
+                 <p className="text-black/60 text-[14px] leading-relaxed mb-6">
+                   Copia la contraseña para acceder al sistema privado de dossieres.
+                 </p>
+                 
+                 {/* Caja de Contraseña Oculta */}
+                 <div className="w-full bg-white border border-black/10 rounded-xl p-3 flex items-center justify-between shadow-sm mb-8 relative">
+                   <div className="flex-1 text-center font-mono text-[24px] text-black/50 tracking-[0.2em] leading-none pt-2">
+                      ••••••••
+                   </div>
+                   <button 
+                     onClick={handleCopyPassword}
+                     className={`w-12 h-12 flex items-center justify-center rounded-lg shadow-md transition-colors ${isCopied ? 'bg-green-500 text-white' : 'bg-[#DCAE56] text-white hover:bg-[#c99a45]'}`}
+                     title="Copiar contraseña"
+                   >
+                     {isCopied ? <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>}
+                   </button>
+                   {isCopied && <div className="absolute -top-10 right-0 bg-black text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow-lg">¡Copiada en portada papeles!</div>}
+                 </div>
+
+                 <a 
+                   href={selectedEpk.url}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   onClick={() => setSelectedEpk(null)}
+                   className="w-full block py-4 rounded-xl bg-black text-[#DCAE56] font-bold text-[15px] shadow-lg hover:shadow-xl transition-all active:scale-[0.98] border border-[#DCAE56]/30 uppercase tracking-widest"
+                 >
+                   Abrir el Dossier
+                 </a>
+               </div>
+             )}
+          </div>
+        </div>
+      )}
 
     </div>
   );
