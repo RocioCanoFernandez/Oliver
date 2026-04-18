@@ -81,12 +81,12 @@ const SeviAIHub = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-white/40 via-transparent to-transparent"></div>
              </div>
              
-             {/* Logo a la derecha, superpuesto entre el hero y la zona blanca */}
-             <div className="absolute -bottom-8 right-6 sm:right-8 z-30">
+             {/* Logo a la derecha, superpuesto como un sellito */}
+             <div className="absolute -bottom-6 right-3 sm:right-4 z-30">
                <img 
                  src={hubData.logoUrl} 
                  alt={`Logo ${hubData.name}`} 
-                 className="h-20 sm:h-24 w-auto object-contain drop-shadow-xl"
+                 className="h-12 sm:h-14 w-auto object-contain drop-shadow-xl"
                  onError={(e) => { e.target.style.display = 'none'; }}
                />
              </div>
@@ -234,14 +234,19 @@ const SeviAIHub = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 px-8 flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity pb-8">
-          <p className="text-[10px] uppercase tracking-[0.2em] font-medium text-black text-center mb-4">
+        <div className="mt-8 px-8 flex flex-col items-center opacity-80 hover:opacity-100 transition-opacity pb-8">
+          <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-black text-center mb-4">
             © 2026 {hubData.name}
           </p>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-black/40 flex items-center gap-2 justify-center hover:text-[#DCAE56] transition-colors">
+          <a 
+            href="https://www.seviai.es/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-[12px] uppercase tracking-[0.2em] font-bold text-black/70 flex items-center gap-2 justify-center hover:text-[#DCAE56] transition-colors group"
+          >
             SeviAI Ecosystem
-            <img src="/logo_sin_fondo.png" alt="SeviAI" className="h-3 w-auto opacity-40 grayscale" />
-          </p>
+            <img src="/logo_sin_fondo.png" alt="SeviAI" className="h-4 w-auto opacity-70 group-hover:opacity-100 grayscale transition-opacity" />
+          </a>
         </div>
 
       </div>
