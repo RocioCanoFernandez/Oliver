@@ -42,7 +42,7 @@ const SeviAIHub = () => {
   ];
 
   const handleSaveContact = () => {
-    const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nFN:${hubData.person}\r\nORG:${hubData.name}\r\nTITLE:${hubData.activity}\r\nTEL;TYPE=WORK,VOICE:${hubData.phone}\r\nEMAIL;TYPE=INTERNET:${hubData.email}\r\nURL:${hubData.hubUrl}\r\nURL:https://hub-hub-oliver.npfusf.easypanel.host/\r\nNOTE:Trompetista, compositor y productor cubano afincado en Barcelona.\r\nEND:VCARD`;
+    const vcard = `BEGIN:VCARD\r\nVERSION:3.0\r\nN:;${hubData.person};;;\r\nFN:${hubData.person}\r\nORG:${hubData.name}\r\nTITLE:${hubData.activity}\r\nTEL;TYPE=WORK,VOICE:${hubData.phone}\r\nEMAIL;TYPE=INTERNET:${hubData.email}\r\nURL:${hubData.hubUrl}\r\nURL:https://hub-hub-oliver.npfusf.easypanel.host/\r\nNOTE:Trompetista, compositor y productor cubano afincado en Barcelona.\r\nEND:VCARD`;
     
     const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
     const url = URL.createObjectURL(blob);
